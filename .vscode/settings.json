@@ -1,0 +1,5 @@
+{
+    "solidity.compileUsingLocalVersion": "c:\\pr0\\blockchain-developer-bootcamp\\soljson-v0.5.0+commit.1d4f565a.js",
+    "solidity.compileUsingRemoteVersion": "v0.5.0+commit.1d4f565a",
+    "javascript.suggest.completeFunctionCalls": true
+}
