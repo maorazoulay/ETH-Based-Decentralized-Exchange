@@ -240,11 +240,44 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
     describe('order actions', async () => {
 
         beforeEach(async () => {
-            // Deposite the ether first
+            // user1 deposits ether only
             await exchange.depositEther({ from: user1, value: ether(1) })
-            // Then make an order to buy tokens with Ether
+            // give tokens to user2
+            await token.transfer(user2, tokens(100), { from: deployer })
+            // user2 deposits tokens only
+            await token.approve(exchange.address, tokens(2), { from: user2 })
+            await exchange.depositToken(token.address, tokens(2), { from: user2 })
+            // user1 makes an order to buy tokens with Ether
             await exchange.makeOrder(token.address, tokens(1), ETHER_ADDRESS, ether(1), { from: user1 })
+          })
+
+        describe('filling orders', async () => {
+            let result
+
+            describe('success', async () => {
+                beforeEach(async () => {
+                    // user2 fills order
+                    result = await exchange.fillOrder('1', { from: user2 })
+                })
+                //user2 should receive 10% less ether
+                it('executes the trade & charges fees', async () => {
+                    // First check balances of user1 - Ether and token
+                    etherBalanceOfUser1 = await exchange.balanceOf(ETHER_ADDRESS, user1)
+                    etherBalanceOfUser1.toString().should.equal('0', 'user1 Ether deducted')
+                    tokenBalanceOfUser1 = await exchange.balanceOf(token.address, user1)
+                    tokenBalanceOfUser1.toString().should.equal(tokens(1).toString(), 'user1 received tokens')
+                    // // Now user2's balances - including the fee deducted
+                    etherBalanceOfUser2 = await exchange.balanceOf(ETHER_ADDRESS, user2)
+                    etherBalanceOfUser2.toString().should.equal(ether(1).toString(), 'user2 received Ether')
+                    tokenBalanceOfUser2 = await exchange.balanceOf(token.address, user2)
+                    tokenBalanceOfUser2.toString().should.equal(tokens(0.9).toString(), 'user2 tokens deducted with fee applied')
+                    // // Now check fee account balance
+                    feeAccountBalance = await exchange.balanceOf(token.address, feeAccount)
+                    feeAccountBalance.toString().should.equal(tokens(0.1).toString(), 'fee account received fee')
+                })
+            })
         })
+
 
         describe('canceling orders', async () => {
             let result
@@ -281,7 +314,7 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 
                 it('rejects unauthorized cancelations', async () => {
                     // Try to cancel an order from another user
-                    await exchange.cancelOrder('1', {from: user2}).should.be.rejectedWith(EVM_REVERT)
+                    await exchange.cancelOrder('1', { from: user2 }).should.be.rejectedWith(EVM_REVERT)
                 })
             })
         })
