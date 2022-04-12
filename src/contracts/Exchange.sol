@@ -11,8 +11,8 @@ import "./Token.sol";
 // [X] Check balances
 // [X] Make order
 // [X] Cancel order
-// [] Fill order
-// [] Charge fees
+// [X] Fill order
+// [X] Charge fees
 
 contract Exchange {
     using SafeMath for uint256;
@@ -25,6 +25,7 @@ contract Exchange {
     mapping(uint256 => _Order) public orders;
     uint256 public orderCount;
     mapping(uint256 => bool) public orderCancelled;
+    mapping(uint256 => bool) public orderFilled;
 
     // Events
     event Deposit(address token, address user, uint256 amount, uint256 balance);
@@ -33,7 +34,8 @@ contract Exchange {
                 address tokenGive, uint256 amountGive, uint256 timestamp);
     event Cancel(uint256 id, address user, address tokenGet, uint256 amountGet, 
                 address tokenGive, uint256 amountGive, uint256 timestamp);
-
+    event Trade(uint256 id, address user, address tokenGet, uint256 amountGet, 
+                address tokenGive, uint256 amountGive, address userFill, uint256 timestamp);
     // Structs
     struct _Order {
         uint256 id;
@@ -108,4 +110,36 @@ contract Exchange {
         orderCancelled[_id] = true; 
         emit Cancel(_order.id, msg.sender, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive, _order.timestamp);
     }
+
+    function fillOrder(uint256 _id) public {
+        require(_id > 0 && _id <= orderCount);
+        require(!orderFilled[_id]);
+        require(!orderCancelled[_id]);
+        // Fetch the order 
+        _Order storage _order = orders[_id];
+        _trade(_order.id, _order.user, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive);
+        // Mark order as filled
+        orderFilled[_id] = true;
+    }
+
+    function _trade(uint256 _orderId, address _user, address _tokenGet,uint256 _amountGet,address _tokenGive,uint256 _amountGive) internal {
+        // Charge fees:
+        // Fee paid by the user that fills the order aka msg.sender
+        // Fee deducted from _amountGet
+        uint256 _feeAmount = _amountGive.mul(feePercent).div(100);
+        // tokens[_tokenGet][feeAccount] = tokens[_tokenGet][feeAccount].add(_feeAmount);
+        // // Execute the trade
+        address sender = msg.sender; //The person who fills the order
+        // tokens[_tokenGet][sender] = tokens[_tokenGet][sender].sub(_amountGet.add(_feeAmount));
+        // tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
+        // tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
+        // tokens[_tokenGive][sender] = tokens[_tokenGive][sender].add(_amountGive);
+        tokens[_tokenGet][msg.sender] = tokens[_tokenGet][msg.sender].sub(_amountGet.add(_feeAmount));
+        tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
+        tokens[_tokenGet][feeAccount] = tokens[_tokenGet][feeAccount].add(_feeAmount);
+        tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
+        tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender].add(_amountGive);
+        // Emit a trade event
+        emit Trade(_orderId, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, sender, now);
+    } 
 }
