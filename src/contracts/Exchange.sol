@@ -127,18 +127,13 @@ contract Exchange {
         // Fee paid by the user that fills the order aka msg.sender
         // Fee deducted from _amountGet
         uint256 _feeAmount = _amountGive.mul(feePercent).div(100);
-        // tokens[_tokenGet][feeAccount] = tokens[_tokenGet][feeAccount].add(_feeAmount);
+        tokens[_tokenGet][feeAccount] = tokens[_tokenGet][feeAccount].add(_feeAmount);
         // // Execute the trade
         address sender = msg.sender; //The person who fills the order
-        // tokens[_tokenGet][sender] = tokens[_tokenGet][sender].sub(_amountGet.add(_feeAmount));
-        // tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
-        // tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
-        // tokens[_tokenGive][sender] = tokens[_tokenGive][sender].add(_amountGive);
-        tokens[_tokenGet][msg.sender] = tokens[_tokenGet][msg.sender].sub(_amountGet.add(_feeAmount));
+        tokens[_tokenGet][sender] = tokens[_tokenGet][sender].sub(_amountGet.add(_feeAmount));
         tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
-        tokens[_tokenGet][feeAccount] = tokens[_tokenGet][feeAccount].add(_feeAmount);
         tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
-        tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender].add(_amountGive);
+        tokens[_tokenGive][sender] = tokens[_tokenGive][sender].add(_amountGive);
         // Emit a trade event
         emit Trade(_orderId, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, sender, now);
     } 
