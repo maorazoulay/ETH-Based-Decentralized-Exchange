@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
-import './App.css';
-import { loadWeb3, loadAccount, loadToken, loadExchange } from '../store/interactions';
-import { connect } from 'react-redux';
-import { accountSelector, contractsLoadedSelector } from '../store/selectors';
-import Navbar from './navbar';
-import Content from './Content';
+import React, { Component } from 'react'
+import './App.css'
+import Navbar from './navbar'
+import Content from './Content'
+import { connect } from 'react-redux'
+import {
+  loadWeb3,
+  loadAccount,
+  loadToken,
+  loadExchange
+} from '../store/interactions'
+import { contractsLoadedSelector } from '../store/selectors'
 
 class App extends Component {
   componentWillMount() {
@@ -31,7 +36,7 @@ class App extends Component {
     return (
       <div>
         <Navbar />
-        {this.props.contractsLoaded ? <Content /> : <div className="content"></div>}
+        { this.props.contractsLoaded ? <Content /> : <div className="content"></div> }
       </div>
     );
   }
