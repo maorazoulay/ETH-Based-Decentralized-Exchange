@@ -1,21 +1,20 @@
 // WEB3
-export function web3Loaded(connection){
+export function web3Loaded(connection) {
     return {
-        type: 'WEB3_LOADED',
-        connection: connection
+      type: 'WEB3_LOADED',
+      connection
     }
-}
-
-//ACCOUNT 
-export function web3AccountLoaded(account){
+  }
+  
+  export function web3AccountLoaded(account) {
     return {
-        type: 'WEB3_ACCOUNT_LOADED',
-        account: account
+      type: 'WEB3_ACCOUNT_LOADED',
+      account
     }
-}
-
-// TOKEN
-export function tokenLoaded(contract) {
+  }
+  
+  // TOKEN
+  export function tokenLoaded(contract) {
     return {
       type: 'TOKEN_LOADED',
       contract
@@ -29,7 +28,7 @@ export function tokenLoaded(contract) {
       contract
     }
   }
-
+  
   export function cancelledOrdersLoaded(cancelledOrders) {
     return {
       type: 'CANCELLED_ORDERS_LOADED',
