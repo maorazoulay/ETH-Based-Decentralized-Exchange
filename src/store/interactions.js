@@ -1,13 +1,18 @@
 import Web3 from 'web3'
-import { web3Loaded, web3AccountLoaded, tokenLoaded, exchangeLoaded,
-   cancelledOrdersLoaded, filledOrdersLoaded, allOrdersLoaded}
-  from './actions'
+import {
+  web3Loaded,
+  web3AccountLoaded,
+  tokenLoaded,
+  exchangeLoaded,
+  cancelledOrdersLoaded,
+  filledOrdersLoaded,
+  allOrdersLoaded
+} from './actions'
 import Token from '../abis/Token.json'
 import Exchange from '../abis/Exchange.json'
 
-
 export const loadWeb3 = async (dispatch) => {
-  if (typeof window.ethereum !== 'undefined') {
+  if(typeof window.ethereum!=='undefined'){
     const web3 = new Web3(window.ethereum)
     dispatch(web3Loaded(web3))
     return web3
@@ -18,9 +23,9 @@ export const loadWeb3 = async (dispatch) => {
 }
 
 export const loadAccount = async (web3, dispatch) => {
-  const accounts = await web3.eth.requestAccounts()
+  const accounts = await web3.eth.getAccounts()
   const account = await accounts[0]
-  if (typeof account !== 'undefined') {
+  if(typeof account !== 'undefined'){
     dispatch(web3AccountLoaded(account))
     return account
   } else {
@@ -67,7 +72,7 @@ export const loadAllOrders = async (exchange, dispatch) => {
   dispatch(filledOrdersLoaded(filledOrders))
 
   // Load order stream
-  const orderStream = await exchange.getPastEvents('Order', { fromBlock: 0, toBlock: 'latest' })
+  const orderStream = await exchange.getPastEvents('Order', { fromBlock: 0,  toBlock: 'latest' })
   // Format order stream
   const allOrders = orderStream.map((event) => event.returnValues)
   // Add open orders to the redux store
