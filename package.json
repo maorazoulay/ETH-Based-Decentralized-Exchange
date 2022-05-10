@@ -6,7 +6,7 @@
   "private": true,
   "homepage": "http://maorazoulay.github.io/ETH-Based-Decentralized-Exchange",
   "engines": {
-    "node": "8.11.1"
+    "node": "16.14.2"
   },
   "dependencies": {
     "@truffle/hdwallet-provider": "1.1.0",
