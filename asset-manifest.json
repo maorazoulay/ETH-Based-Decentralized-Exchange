@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/ETH-Based-Decentralized-Exchange/static/css/main.b7205f96.chunk.css",
+    "main.js": "/ETH-Based-Decentralized-Exchange/static/js/main.5d7c3080.chunk.js",
+    "main.js.map": "/ETH-Based-Decentralized-Exchange/static/js/main.5d7c3080.chunk.js.map",
+    "runtime-main.js": "/ETH-Based-Decentralized-Exchange/static/js/runtime-main.c706b283.js",
+    "runtime-main.js.map": "/ETH-Based-Decentralized-Exchange/static/js/runtime-main.c706b283.js.map",
+    "static/css/2.963765e0.chunk.css": "/ETH-Based-Decentralized-Exchange/static/css/2.963765e0.chunk.css",
+    "static/js/2.53b809db.chunk.js": "/ETH-Based-Decentralized-Exchange/static/js/2.53b809db.chunk.js",
+    "static/js/2.53b809db.chunk.js.map": "/ETH-Based-Decentralized-Exchange/static/js/2.53b809db.chunk.js.map",
+    "index.html": "/ETH-Based-Decentralized-Exchange/index.html",
+    "precache-manifest.2825420b17c883aaca4d5de031b28153.js": "/ETH-Based-Decentralized-Exchange/precache-manifest.2825420b17c883aaca4d5de031b28153.js",
+    "service-worker.js": "/ETH-Based-Decentralized-Exchange/service-worker.js",
+    "static/css/2.963765e0.chunk.css.map": "/ETH-Based-Decentralized-Exchange/static/css/2.963765e0.chunk.css.map",
+    "static/css/main.b7205f96.chunk.css.map": "/ETH-Based-Decentralized-Exchange/static/css/main.b7205f96.chunk.css.map",
+    "static/js/2.53b809db.chunk.js.LICENSE.txt": "/ETH-Based-Decentralized-Exchange/static/js/2.53b809db.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c706b283.js",
+    "static/css/2.963765e0.chunk.css",
+    "static/js/2.53b809db.chunk.js",
+    "static/css/main.b7205f96.chunk.css",
+    "static/js/main.5d7c3080.chunk.js"
+  ]
+}
