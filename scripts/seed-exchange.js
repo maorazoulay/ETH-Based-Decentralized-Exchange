@@ -42,7 +42,7 @@ module.exports = async function(callback) {
     const user2 = accounts[1]
 
     // User 1 Deposits Ether
-    amount = 1
+    amount = 0.1
     await exchange.depositEther({ from: user1, value: ether(amount) })
     console.log(`Deposited ${amount} Ether from ${user1}`)
 
@@ -62,7 +62,7 @@ module.exports = async function(callback) {
     // User 1 makes order to get tokens
     let result
     let orderId
-    result = await exchange.makeOrder(token.address, tokens(100), ETHER_ADDRESS, ether(0.1), { from: user1 })
+    result = await exchange.makeOrder(token.address, tokens(100), ETHER_ADDRESS, ether(0.01), { from: user1 })
     console.log(`Made order from ${user1}`)
 
     // User 1 cancells order
@@ -75,7 +75,7 @@ module.exports = async function(callback) {
     //
 
     // User 1 makes order
-    result = await exchange.makeOrder(token.address, tokens(100), ETHER_ADDRESS, ether(0.1), { from: user1 })
+    result = await exchange.makeOrder(token.address, tokens(100), ETHER_ADDRESS, ether(0.01), { from: user1 })
     console.log(`Made order from ${user1}`)
 
     // User 2 fills order
@@ -99,7 +99,7 @@ module.exports = async function(callback) {
     await wait(1)
 
     // User 1 makes final order
-    result = await exchange.makeOrder(token.address, tokens(200), ETHER_ADDRESS, ether(0.15), { from: user1 })
+    result = await exchange.makeOrder(token.address, tokens(200), ETHER_ADDRESS, ether(0.015), { from: user1 })
     console.log(`Made order from ${user1}`)
 
     // User 2 fills final order
